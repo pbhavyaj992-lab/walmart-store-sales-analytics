@@ -72,3 +72,10 @@ Baselines only — no ML model claimed. Seasonal naive beats the mean baseline b
 
 ## Stack
 Power BI, DAX, Python (pandas), SQL, PostgreSQL, Excel. Built by Bhavya Patel.
+
+## What I would do differently
+
+- The files used here came from a public GitHub mirror, not from Kaggle. I would re-download train, features, stores and test from the competition page, re-run the pipeline, and confirm the reconciliation still matches.
+- Only honest baselines are shown (seasonal naive WMAE 4,219.36). I would build a proper forecasting model next, per store-department, and report whether it beats the seasonal-naive bar.
+- Markdowns only exist after November 2011 and cover 36–50% of feature rows, so their signal is limited. I would test whether markdown effects hold on the post-2011 window alone instead of across the whole file.
+- There is no `.pbix` in this repo. I would build the Power BI report from `powerbi/model.md` and check every measure against `output/kpis.txt`.
