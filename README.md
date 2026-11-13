@@ -1,0 +1,74 @@
+# Walmart Store Sales Analytics
+
+**Dataset:** Walmart Recruiting — Store Sales Forecasting (Kaggle competition)
+**Scale:** 421,570 train rows (45 stores x 81 departments, weekly, Feb 2010 – Oct 2012); 8,190 features rows; 45 stores; 115,064 test rows.
+
+## Business question
+Which stores and departments drive holiday vs non-holiday sales, how much do markdowns, fuel price, temperature, CPI and unemployment explain weekly sales, and what does an honest baseline forecast look like?
+
+## Licence and commercial use
+**Licence: Kaggle competition terms — NO Creative Commons licence. Portfolio use at most, never commercial, never redistribute the data.** The competition data may be used for learning and portfolio demonstration only. Do not sell this project or share the raw files.
+
+## Data source and how to reproduce
+Source: Kaggle competition `walmart-recruiting-store-sales-forecasting` — https://www.kaggle.com/c/walmart-recruiting-store-sales-forecasting
+Kaggle needs an account plus acceptance of the competition rules to download. The files used here came from a public GitHub mirror (`SagarBapodara/Walmart-Sales-Forecasting`, folder `data/`); row counts were verified against the official spec (train 421,570; features 8,190; stores 45; test 115,064). To reproduce from the official source, download from Kaggle and place train.csv, features.csv, stores.csv and test.csv in `data/raw/`, then run `python3 scripts/01_clean_analyse.py`. Do NOT push the raw CSVs to a public GitHub repo.
+
+**Status: REAL DATA PROCESSED.** Every figure below was computed from the real
+dataset by `scripts/01_clean_analyse.py`. Nothing is fabricated. See
+`output/reconciliation.txt` for the full reconciliation.
+
+## Key figures (from `output/kpis.txt`)
+- train_rows: 421570
+- features_rows: 8190
+- stores: 45
+- test_rows: 115064
+- total_weekly_sales: 6737218987.11
+- avg_weekly_sales_per_store_dept: 15981.26
+- median_weekly_sales: 7612.03
+- negative_weekly_sales_rows: 1285
+- date_min: 2010-02-05
+- date_max: 2012-10-26
+- holiday_weeks_rows: 29661
+- holiday_share_pct: 7.04
+- departments: 81
+- markdown_cols_non_null_pct: {'MarkDown1': 49.2, 'MarkDown2': 35.7, 'MarkDown3': 44.1, 'MarkDown4': 42.3, 'MarkDown5': 49.5}
+- temperature_null_pct: 0.0
+- cpi_null_pct: 7.14
+- unemployment_null_pct: 7.14
+
+## What the data actually says
+- Total weekly sales in train: USD 6,737,218,987.11 across 45 stores and 81 departments.
+- Honest baselines only (temporal split, train to 2012-04-27, test 26 weeks to 2012-10-26): seasonal naive (same store-dept, same week last year) WMAE 4,219.36, beating the department-store mean baseline WMAE 5,989.65. WMAE is the competition metric. No ML model is claimed.
+- Holiday weeks average only 7.1% more per store-department than non-holiday weeks (USD 17,035.82 vs 15,901.45) — holidays lift sales, but they do not transform them.
+- Type A stores (22 of 45) produce USD 4.33bn; Type C stores (6) produce USD 405.5m. Store size, not just type, drives the gap.
+- Departments 92 (USD 483.9m) and 95 (USD 449.3m) are the two largest by far.
+- Markdowns only exist after Nov 2011 and cover just 36–50% of feature rows; MarkDown1 (r = 0.32) and MarkDown5 (r = 0.31) correlate most with store-week sales, while temperature, fuel price, CPI and unemployment are all near zero (|r| <= 0.11).
+- 1,285 train rows have negative Weekly_Sales (returns / adjustments).
+
+## The decision this answers
+Use the seasonal-naive baseline (WMAE 4,219.36) as the bar any forecasting model must beat, staff and stock Departments 92 and 95 first, and treat markdowns as the only external driver with a real signal.
+
+## Reconciliation
+```
+WALMART — RECONCILIATION (computed from the real competition files, 2026-11-13)
+train.csv: 421570 rows (spec: 421,570) | features.csv: 8190 rows (spec: 8,190) | stores.csv: 45 rows (spec: 45) | test.csv: 115064 rows
+Total Weekly_Sales in train: 6,737,218,987.11
+Merged train+features+stores rows: 421570 (= train rows, no fan-out)
+Negative Weekly_Sales rows: 1285 (returns/adjustments)
+Forecast: temporal split only — train to 2012-04-27, test 2012-05-04 to 2012-10-26 (26 weeks, 76903 rows). WMAE is the competition metric.
+Baselines only — no ML model claimed. Seasonal naive beats the mean baseline because of strong yearly seasonality; both are honest starting points.
+```
+
+## What is in this folder
+- `data/raw/` — the real source file(s), as downloaded.
+- `data/clean/` — cleaned fact table / sample produced by the pipeline.
+- `data/data_dictionary.md` — column meanings, grains, caveats.
+- `scripts/01_clean_analyse.py` — the full reproducible pipeline (clean + analyse + reconcile).
+- `sql/schema.sql` — PostgreSQL schema for the same model.
+- `sql/analysis_queries.sql` — the key analytical queries in SQL.
+- `powerbi/model.md` — star schema, DAX measures and page plan (no .pbix in this repo; build it from this document).
+- `excel/` — Excel dashboard workbook built from the real aggregates.
+- `output/` — aggregate CSVs, `kpis.txt`, `reconciliation.txt`.
+
+## Stack
+Power BI, DAX, Python (pandas), SQL, PostgreSQL, Excel. Built by Bhavya Patel.

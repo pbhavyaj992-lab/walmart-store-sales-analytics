@@ -1,0 +1,3 @@
+baseline,WMAE,MAE,coverage_rows,test_rows,test_weeks
+dept_store_mean,5989.653222757781,2588.90874455822,76903,76903,26
+seasonal_naive_52w,4219.359758271731,1725.3929914700059,76903,76903,26

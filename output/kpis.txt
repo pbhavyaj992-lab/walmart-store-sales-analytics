@@ -1,0 +1,17 @@
+train_rows: 421570
+features_rows: 8190
+stores: 45
+test_rows: 115064
+total_weekly_sales: 6737218987.11
+avg_weekly_sales_per_store_dept: 15981.26
+median_weekly_sales: 7612.03
+negative_weekly_sales_rows: 1285
+date_min: 2010-02-05
+date_max: 2012-10-26
+holiday_weeks_rows: 29661
+holiday_share_pct: 7.04
+departments: 81
+markdown_cols_non_null_pct: {'MarkDown1': 49.2, 'MarkDown2': 35.7, 'MarkDown3': 44.1, 'MarkDown4': 42.3, 'MarkDown5': 49.5}
+temperature_null_pct: 0.0
+cpi_null_pct: 7.14
+unemployment_null_pct: 7.14

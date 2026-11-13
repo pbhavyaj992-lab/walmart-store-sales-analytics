@@ -1,0 +1,3 @@
+IsHoliday,rows,total_sales,avg_sales,median_sales,holiday
+False,391909,6231919435.55,15901.445069008367,7589.95,non_holiday_week
+True,29661,505299551.56,17035.823187350394,7947.74,holiday_week

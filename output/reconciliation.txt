@@ -1,0 +1,7 @@
+WALMART — RECONCILIATION (computed from the real competition files, 2026-11-13)
+train.csv: 421570 rows (spec: 421,570) | features.csv: 8190 rows (spec: 8,190) | stores.csv: 45 rows (spec: 45) | test.csv: 115064 rows
+Total Weekly_Sales in train: 6,737,218,987.11
+Merged train+features+stores rows: 421570 (= train rows, no fan-out)
+Negative Weekly_Sales rows: 1285 (returns/adjustments)
+Forecast: temporal split only — train to 2012-04-27, test 2012-05-04 to 2012-10-26 (26 weeks, 76903 rows). WMAE is the competition metric.
+Baselines only — no ML model claimed. Seasonal naive beats the mean baseline because of strong yearly seasonality; both are honest starting points.
